@@ -1,61 +1,62 @@
 package virtual_pet;
+/*
+Our pets are housed in a shelter and cared for by you. You can interact with one pet at a time, or all pets. They can be adopted.
+
+Virtual Toys, Inc. requires:
+
+Ability for players to admit pets into the shelter or adopt them
+Ability for players to see a list of all pets in the shelter
+Ability for players to see the current status of all pets at once, such as hunger, boredom, and health
+Ability for players to choose to interact with one pet or multiple pets, such as feed, play, and take to doctor
+ */
 
 import java.util.Scanner;
-
 public class VirtualPetApplication {
-    public static void main(String[] args){
-        String hungerSatisfaction = "";
+    public static void main(String[] args) {
         Scanner input = new Scanner(System.in);
-        System.out.println("enter your pet name : ");
-        String petName = input.nextLine();
-        System.out.println("enter what kind of animal you have :");
-        String species = input.nextLine();
-        System.out.println("enter you pet breed");
-        String breed = input.nextLine();
-        System.out.println("enter your pet hunger level between 1 to 100: ");
-        int hungerLevel = input.nextInt();
-        System.out.println("enter your pet thirst level from 1 to 100 :");
-        int thirsty = input.nextInt();
-        input.nextLine();
-        VertualPet dog = new VertualPet(petName,species,breed,hungerLevel,thirsty);
-        //int hungerLevel = dog.tick(dog.getIsHungry());
-
+        VirtualPetShelter vps = new VirtualPetShelter();
+        GamingLoop gp = new GamingLoop();
         boolean status = true;
-        boolean bored = false;
-            while (status) {
-                System.out.println("My name is " + dog.getPetName() + "\nand I am animal type " + dog.getPetType() +"\nmy breed is :"+dog.getBreed()+
-                        "\nand hunger satisfaction is : "+dog.getHungry()+" "+ dog.hungerStatus(dog.getHungry()) +
-                        "\nmy thirst level is: " + dog.getThirsty());
-                System.out.println("enter you want your dog to be 'feed' or give 'liquids' or take for 'walk' or 'stop' to end");
-                String action = input.nextLine();
-                action.toLowerCase();
-                switch (action){
-                    case "feed":
-                        System.out.println("enter how much quantity to be feed in number");
-                        int foodQuantity = input.nextInt();
-                        dog.feedFood(foodQuantity);
-                        break;
-                    case "liquids":
-                        System.out.println("enter the quantity to be given to drink in number");
-                        int liquidQuantity = input.nextInt();
-                        dog.feedLiquid(liquidQuantity);
-                        break;
-                    case "walk":
-                        System.out.println("please take your dog to walk :");
-                        dog.walk();
-                        break;
-                    case "stop":
-                        System.out.println(" stop application");
-                        status = !status;
-                        break;
-                }
-                if((int)Math.random()*100 == 5){
-                    // bored = !bored;
-                    System.out.println("your dog is bored: ");
-                    bored = !bored;
-                }
-                dog.tick();
+        VertualPet vp1 = new VertualPet("Buiscuit","Dog",45);
+        VertualPet vp2 = new VertualPet("Tommy","Cat",15);
+        VertualPet vp3 = new VertualPet("colten","Dog",5);
+        VertualPet vp4 = new VertualPet("Tinku","Cat",65);
+        VertualPet vp5 = new VertualPet("camel","iguana",15);
+        vps.petsList.add(vp1);
+        vps.petsList.add(vp2);
+        vps.petsList.add(vp3);
+        vps.petsList.add(vp4);
+        vps.petsList.add(vp5);
+        while (status) {
 
+                System.out.println("WOULD YOU LIKE TO 'ADMIT' OR 'ADOPT' A PET ?    ");
+               // input.nextLine();
+                String userChoice = input.nextLine();
+                if(userChoice.equalsIgnoreCase("admit")){
+                    vps.admit();
+                }
+                else if(userChoice.equalsIgnoreCase("adopt")){
+                    vps.adopt();
+                }
+                vps.listOfPetsAdmited();
+                System.out.println("ENTER STOP TO 'STOP' APPLICATION ANY TIME.");
+                String command = input.nextLine();
+                if(command.equalsIgnoreCase("stop")){
+                    break;
+                }
+                System.out.println(" \n");
+                System.out.println("ENTER STATUS TO CHECK FOR STATUS");
+                String  allStatus= input.nextLine();
+                if(allStatus.equalsIgnoreCase("status")){
+                    vps.statusCheck();
+                }
+                System.out.println("would you like to select single pet at a time from the list for press 1 ");
+                int choice = input.nextInt();
+                input.nextLine();
+                if(choice == 1){
+                    vps.individualPetselectio();
+                }
             }
     }
 }
+

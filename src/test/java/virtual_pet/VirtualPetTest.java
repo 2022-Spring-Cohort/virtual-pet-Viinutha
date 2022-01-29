@@ -1,50 +1,78 @@
 package virtual_pet;
 
-import org.junit.Assert;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-
-import static org.junit.jupiter.api.Assertions.assertAll;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 public class VirtualPetTest {
+    VertualPet underTest;
+    @BeforeEach
+    public void setup(){
+        underTest = new VertualPet("Mochi","small Dog",30);
+    }
 
     @Test
-    public void hungerStatusTest(){
-        VertualPet vp = new VertualPet("boll","dog","lan",25,30);
-        assertAll(
-                ()->Assert.assertTrue(vp.hungerStatus(70).equals("i am hungry :-(")),
-                ()->Assert.assertTrue(vp.hungerStatus(25).equals("I am satisfied :-)")),
-                ()->Assert.assertTrue(vp.hungerStatus(0).equals("I am dead"))
-        );
+    public void petShouldHaveFeilds(){
+        assertEquals("Mochi",underTest.getPetName());
+        assertEquals("small Dog",underTest.getPetType());
+        assertEquals(30,underTest.getHungry());
     }
     @Test
     public void tickTest(){
-        VertualPet vp = new VertualPet("boll","dog","lan",25,45);
-        vp.tick();
-        assertAll(
-                ()->Assert.assertTrue(vp.getHungry() == 30),
-                ()->Assert.assertTrue(vp.getThirsty() == 50)
-        );
+        underTest.tick();
+        assertEquals(35,underTest.getHungry());
+        assertEquals(5,underTest.getBored());
     }
     @Test
     public void feedFoodTest(){
-        VertualPet vp = new VertualPet("boll","dog","lan",25,45);
-
-        vp.feedFood(30);
-        vp.feedLiquid(20);
-        assertAll(
-
-                ()->Assert.assertTrue(vp.getHungry() == 25),
-                ()->Assert.assertTrue(vp.getThirsty() == 25)
-        );
-        vp.feedFood(5);
-        vp.feedLiquid(10);
-        assertAll(
-
-                ()->Assert.assertTrue(vp.getHungry() == 20),
-                ()->Assert.assertTrue(vp.getThirsty() == 15)
-        );
-
+        underTest.feedFood(10);
+        assertEquals(20,underTest.getHungry());
+    }
+    @Test
+    public void walkTest(){
+        underTest.walk();
+        assertEquals(40,underTest.getHungry());
+    }
+    @Test
+    public void hungerStatusTest(){
+        underTest.hungerStatus();
+        assertEquals("I am satisfied :-)",underTest.hungerStatus());
+        underTest.tick();
+        underTest.tick();
+        underTest.tick();
+        underTest.tick();
+        underTest.tick();
+        assertEquals("I am starving :-(",underTest.hungerStatus());
+        underTest.feedFood(55);
+        assertEquals("I am dead",underTest.hungerStatus());
+    }
+    @Test
+    public void healthStatusTest(){
+        underTest = new VertualPet("Mochi","small Dog",90);
+        underTest.healthStatus();
+        assertEquals("my health status is bad",underTest.healthStatus());
+        underTest.walk();
+        assertEquals("my health status is bad",underTest.healthStatus());
+        underTest.feedFood(60);
+        assertEquals("my health is good",underTest.healthStatus());
     }
 
+    @Test
+    public void boredomStatusTest(){
+        underTest.tick();
+        assertEquals("I am not bored",underTest.boredomStatus());
+        underTest.tick();
+        underTest.tick();
+        underTest.tick();
+        underTest.tick();
+        underTest.tick();
+        underTest.tick();
+        underTest.tick();
+        underTest.tick();
+        underTest.tick();
+        underTest.tick();
+        assertEquals("I am bored please take me to walk",underTest.boredomStatus());
+    }
 }
+

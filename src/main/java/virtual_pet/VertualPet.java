@@ -1,18 +1,21 @@
 package virtual_pet;
 
+import java.util.Scanner;
+
 public class VertualPet {
     private String petName;
     private String petType;
-    private String breed;
     private int hungry;
-    private int thirsty;
+    private boolean health;
+    private int bored;
+    Scanner input = new Scanner(System.in);
 
-    public VertualPet(String petName, String petType, String breed, int hungry, int thirsty) {
+    public VertualPet(String petName, String petType, int hungry) {
         this.petName = petName;
         this.petType = petType;
-        this.breed = breed;
         this.hungry = hungry;
-        this.thirsty = thirsty;
+        this.bored = 0;
+
     }
 
     public String getPetName() {
@@ -23,48 +26,62 @@ public class VertualPet {
         return petType;
     }
 
-    public String getBreed() {
-        return breed;
-    }
-
     public int getHungry() {
         return hungry;
     }
 
-    public int getThirsty() {
-        return thirsty;
+    public int getBored() {return bored;
     }
-
-    public String hungerStatus(int hungerSatisfaction){
-
-        if (hungerSatisfaction <= 50 && hungerSatisfaction > 0) {
+    public boolean isHealth() {
+        return health;
+    }
+    public String hungerStatus() {
+        if (hungry <= 50 && hungry > 0) {
             return "I am satisfied :-)";
-       }
-       else if (hungerSatisfaction > 50){
-           return "i am starving :-(";
-       }
-       else if(hungerSatisfaction == 0) {
+        } else if (hungry > 50) {
+            return "I am starving :-(";
+        } else if (hungry <= 0) {
             return "I am dead";
+
         }
-       return "";
+        return "";
     }
+    public String boredomStatus() {
+        if (bored > 50 && bored <= 100) {
+            return "I am bored please take me to walk";
+        }
+        return  "I am not bored";
+
+    }
+
     public void tick() {
-
-        hungry = Math.max(0, hungry + 5);
-        thirsty = Math.max(0, thirsty + 5);
+        hungry += 5;
+        bored += 5;
     }
-
-    public void feedFood(int feedingLevel){
-        if(hungry - feedingLevel > 0) {
+    public void feedFood(int feedingLevel) {
+        if (hungry - feedingLevel >= 0) {
             hungry -= feedingLevel;
         }
     }
-    public void feedLiquid(int liquid){
-        if(thirsty - liquid > 0) {
-            thirsty -= liquid;
+    public void walk() {
+
+        hungry += 10;
+        bored -= 10;
+    }
+    public void boredom() {
+        System.out.println("I am bored please tak eme to walk");
+    }
+    public String healthStatus(){
+        if(getHungry() > 80 || getHungry() > 100){
+            return "my health status is bad";
         }
-       }
-    public void walk(){
-        hungry++;
+        else if(getHungry() == 0)
+            return  "I am dead";
+        return "my health is good";
+
+    }
+    public void doctor() {
+        health = true;
     }
 }
+
